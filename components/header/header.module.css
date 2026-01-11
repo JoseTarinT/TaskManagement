@@ -1,0 +1,162 @@
+.menu {
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  width: 100%;
+  z-index: 999;
+}
+
+.scrolled {
+  background-color: var(--header-bg);
+}
+
+.logoContainer {
+  color: var(--foreground);
+  padding-right: 1rem;
+  margin-right: 1rem;
+  border-right: 2px solid var(--border);
+}
+
+.logoContainer a {
+  text-decoration: none;
+}
+
+.navigation {
+  margin-right: auto;
+}
+
+.menuOptions {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  margin: auto;
+  padding: 3px;
+  border: 1px solid transparent;
+}
+
+.burger {
+  /* hide by default (change visibility breakpoint below) */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1000; /* keep it above menu */
+  padding: 3px;
+}
+
+/* line visuals */
+.burger span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: var(--foreground); /* use theme color */
+  border-radius: 2px;
+  transition: transform 250ms ease, opacity 200ms ease;
+  transform-origin: center;
+}
+
+@media (min-width: 540px) {
+  .navigation {
+    display: block;
+  }
+  .burger {
+    display: none;
+  }
+}
+
+@media (max-width: 539px) {
+  .navigation {
+    display: none;
+  }
+
+  .navigation.open {
+    display: flex;
+    position: fixed;
+    top: 64px;
+    right: 16px;
+    left: 16px;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: var(--header-bg);
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(187, 188, 209, 0.18);
+    z-index: 998;
+    animation: slideIn 180ms ease-out;
+  }
+
+  .menuOptions {
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .menuOptions li {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+  }
+
+  .menuButtons {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    text-align: center;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* open/close animation — use the module-scoped class 'open' */
+.burgerOpen span:nth-child(1) {
+  transform: translateY(7.5px) rotate(45deg);
+}
+.burgerOpen span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.burgerOpen span:nth-child(3) {
+  transform: translateY(-7.5px) rotate(-45deg);
+}
+
+.menuButtons {
+  color: var(--foreground);
+  margin: 3px;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.menuButtons:hover {
+  background-color: var(--foreground);
+  color: var(--text-secondary);
+  padding: 0.5rem;
+  border: none;
+  border-radius: 30px;
+}
+
+.themeToggle {
+  margin-left: auto;
+  cursor: pointer;
+  padding: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 30px;
+  background: #4a4a4a;
+}

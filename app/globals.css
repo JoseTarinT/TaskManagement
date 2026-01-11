@@ -1,15 +1,90 @@
-:root {
-  --background: #ffffff;
+html[data-theme="light"],
+:root[data-theme="light"] {
+  color-scheme: light;
+  --card-bg: #ffffff;
+  --header-bg: #fafafa;
+  --text-secondary: #ededed;
+  --accent: #06b6d4;
+  --border: #4b5563;
+  --border-secondary: #c8c0b6;
   --foreground: #171717;
+  --foreground-secondary: #000000;
+  --background: #f9fafb;
+  --background-secundary: #ffffff;
+  --name-background-gradient: linear-gradient(90deg, #4b5563, #6b7280, #1f2937);
+  --name-box-shadow: 0 0 8px #ffffff33;
+  /* tweak backdrop for light mode if needed via html[data-theme="light"] body::after */
+}
+
+/* System preference fallbacks (used only when no data-theme is set) */
+@media (prefers-color-scheme: light) {
+  :root {
+    --card-bg: #ffffff;
+    --header-bg: #fafafa;
+    --text-secondary: #ededed;
+    --accent: #06b6d4;
+    --border: #4b5563;
+    --border-secondary: #c8c0b6;
+    --foreground: #171717;
+    --foreground-secondary: #000000;
+    --background: #f9fafb;
+    --background-secundary: #ffffff;
+    --name-background-gradient: linear-gradient(
+      90deg,
+      #4b5563,
+      #6b7280,
+      #1f2937
+    );
+    --name-box-shadow: 0 0 8px #ffffff33;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    color-scheme: dark;
+    --card-bg: #1f2937;
+    --header-bg: #111827;
+    --primary-button-bg: #374151;
+    --secundary-button-bg: #e5e7eb;
+    --text-secondary: #171717;
+    --accent: #06b6d4;
+    --border: #d1d5db;
+    --border-secondary: #373f49;
     --foreground: #ededed;
+    --foreground-secondary: #ffffff;
+    --background: #111827;
+    --background-secundary: #16223b;
+    --name-background-gradient: linear-gradient(
+      90deg,
+      #f9fafb,
+      #f3f4f6,
+      #ffffff
+    );
+    --name-box-shadow: 0 0 8px #f9731680;
   }
 }
 
+/* Explicit dark theme override (JS-driven) */
+html[data-theme="dark"],
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --card-bg: #1f2937;
+  --header-bg: #111827;
+  --primary-button-bg: #374151;
+  --secundary-button-bg: #e5e7eb;
+  --text-secondary: #171717;
+  --accent: #06b6d4;
+  --border: #4b5563;
+  --border-secondary: #373f49;
+  --foreground: #ededed;
+  --foreground-secondary: #ffffff;
+  --background: #111827;
+  --background-secundary: #16223b;
+  --name-background-gradient: linear-gradient(90deg, #f9fafb, #f3f4f6, #ffffff);
+  --name-box-shadow: 0 0 8px #f9731680;
+}
+
+/* layout / global rules */
 html,
 body {
   max-width: 100vw;
@@ -18,12 +93,40 @@ body {
 
 body {
   color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: color 180ms ease, background-color 220ms ease;
 }
 
+body::after {
+  content: "";
+  position: fixed;
+  inset: -48px; /* expand beyond viewport to hide blur halo */
+  z-index: -1;
+  background: var(--background);
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  opacity: 0.9;
+  filter: blur(36px) saturate(120%);
+  pointer-events: none;
+  will-change: background-position, transform;
+  transform: scale(1.02);
+  transition: opacity 220ms ease, filter 220ms ease, transform 220ms ease;
+}
+
+/* explicit theme-specific backdrop adjustments (JS-driven attribute overrides system) */
+html[data-theme="dark"] body::after {
+  opacity: 0.7;
+  filter: blur(28px) saturate(130%);
+}
+
+html[data-theme="light"] body::after {
+  opacity: 0.95;
+  filter: blur(18px) saturate(110%);
+}
+
+/* defaults for universal elements */
 * {
   box-sizing: border-box;
   padding: 0;
@@ -31,12 +134,14 @@ body {
 }
 
 a {
-  color: inherit;
+  color: var(--accent);
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+/* ensure form controls and UA components follow the theme */
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+html[data-theme="light"] {
+  color-scheme: light;
 }
